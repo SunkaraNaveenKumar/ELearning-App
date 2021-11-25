@@ -1,10 +1,15 @@
 import React,{useState} from "react";
-
+import { useDispatch,useSelector } from "react-redux";
+import { stateAdminLogin } from "../../actions/actionCreater";
 const AdminLogin=(props)=>{
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
     const [formErrors,setErrors]=useState({})
     const errors={}
+    const dispatch=useDispatch()
+    const adminLoginError=useSelector((state)=>{
+        return state.adminError.loginError
+    })
     ////////////////////
     const handleChange=(e)=>{
         const inputType=e.target.name
@@ -39,7 +44,7 @@ const AdminLogin=(props)=>{
                 email,
                 password,
             }
-            console.log('adminlogin',formData)
+            dispatch(stateAdminLogin(formData,props))
             setErrors({})
             setEmail('')
             setPassword('')
@@ -53,6 +58,7 @@ const AdminLogin=(props)=>{
         <div>
             <hr />
             <h2>Admin Login</h2>
+            {adminLoginError && <p style={{color:"red"}}>{adminLoginError}</p>}
             <form onSubmit={handleSubmit}>
                 <input type='text' name='email' value={email} onChange={handleChange} placeholder="Enter Your Email..." /> 
                 {formErrors.email && <p style={{color:"red"}}>{formErrors.email}</p>}
@@ -60,7 +66,7 @@ const AdminLogin=(props)=>{
                 <input type='text' name='password' value={password} onChange={handleChange} placeholder="pasword..." /> 
                 {formErrors.password && <p style={{color:"red"}}>{formErrors.password}</p>}
                 <br />
-                <input type='submit' value='register' />
+                <input type='submit' value='login' />
             </form>
         </div>
     )

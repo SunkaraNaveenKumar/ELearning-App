@@ -1,13 +1,16 @@
 import React,{useState} from "react";
 import {Link} from 'react-router-dom' 
-
+import {useDispatch} from 'react-redux'
+import { asyncAdminRegister } from "../../actions/actionCreater";
 const AdminRegister=(props)=>{
     const [username,setUsername]=useState('')
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
     const [academy,setAcademy]=useState('')
     const [formErrors,setErrors]=useState({})
+    const [website,setWebsite]=useState('')
     const errors={}
+    const dispatch=useDispatch()
     ////////////////////
     const handleChange=(e)=>{
         const inputType=e.target.name
@@ -27,6 +30,10 @@ const AdminRegister=(props)=>{
         if(inputType==="academy")
         {
             setAcademy(inputValue)
+        }
+        if(inputType==='website')
+        {
+            setWebsite(inputValue)
         }
     }
     ////////////////////
@@ -55,12 +62,12 @@ const AdminRegister=(props)=>{
         if(Object.keys(errors).length===0)
         {
             const formData={
-                username,
-                email,
-                password,
-                academy:{name:academy}
+                "username":username,
+                "email":email,
+                "password":password,
+                "academy":{name:academy,website:website},
             }
-            console.log('adminregister',formData)
+            dispatch(asyncAdminRegister(formData))
             setErrors({})
             setUsername('')
             setPassword('')
@@ -88,6 +95,9 @@ const AdminRegister=(props)=>{
                 <br />
                 <input type='text' name='academy' value={academy} onChange={handleChange} placeholder="Enter Your Academy Name..." />
                 {formErrors.academy && <p style={{color:"red"}}>{formErrors.academy}</p>}
+                <br />
+                <input type='text' name='website' value={website} onChange={handleChange} placeholder="website..." />
+                <span>(Optional)</span>
                 <br />
                 <input type='submit' value='register' />
             </form> <br />
