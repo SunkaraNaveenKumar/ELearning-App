@@ -4,7 +4,7 @@ import App from "./components/common/App";
 import {BrowserRouter} from 'react-router-dom'
 import {Provider} from "react-redux";
 import configureStore from './store/configureStore'
-import { setAdminToggle, stateAdminAccount } from './actions/actionCreater';
+import { setAdminToggle, stataStudentsList, stateAdminAccount } from './actions/actionCreater';
 
 const store=configureStore()
 console.log("initialstate",store.getState())
@@ -16,6 +16,7 @@ const runCallback=()=>{
 {
     store.dispatch(stateAdminAccount())
     store.dispatch(setAdminToggle(true))
+    store.dispatch(stataStudentsList())
 }
 }
 runCallback()

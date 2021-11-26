@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import {Link} from 'react-router-dom' 
-import {useDispatch} from 'react-redux'
+import {useDispatch,useSelector} from 'react-redux'
 import { asyncAdminRegister } from "../../actions/actionCreater";
 const AdminRegister=(props)=>{
     const [username,setUsername]=useState('')
@@ -11,6 +11,9 @@ const AdminRegister=(props)=>{
     const [website,setWebsite]=useState('')
     const errors={}
     const dispatch=useDispatch()
+    const adminRegisterError=useSelector((state)=>{
+        return state.adminError.registerError
+    })
     ////////////////////
     const handleChange=(e)=>{
         const inputType=e.target.name
@@ -67,7 +70,7 @@ const AdminRegister=(props)=>{
                 "password":password,
                 "academy":{name:academy,website:website},
             }
-            dispatch(asyncAdminRegister(formData))
+            dispatch(asyncAdminRegister(formData,props))
             setErrors({})
             setUsername('')
             setPassword('')
@@ -83,6 +86,7 @@ const AdminRegister=(props)=>{
         <div>
             <hr />
             <h2>Admin Register</h2>
+            {adminRegisterError && <p style={{color:"red"}}>{adminRegisterError}</p>}
             <form onSubmit={handleSubmit}>
                 <input type='text' name='username' value={username} onChange={handleChange} placeholder="Enter Your Name..." /> 
                 {formErrors.username && <p style={{color:"red"}}>{formErrors.username}</p>}

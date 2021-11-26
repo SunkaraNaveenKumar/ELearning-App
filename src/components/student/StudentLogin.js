@@ -1,6 +1,11 @@
 import React,{useState} from "react";
-
+import {useDispatch,useSelector} from 'react-redux'
+import { stateStudentLogin } from "../../actions/actionCreater";
 const StudentLogin=(props)=>{
+    const dispatch=useDispatch()
+    const studentLoginError=useSelector((state)=>{
+        return state.studentData.studentLoginError
+    })
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
     ////////////////////////
@@ -23,7 +28,7 @@ const StudentLogin=(props)=>{
             email,
             password
         }
-        console.log('studentlogin',formData)
+        dispatch(stateStudentLogin(formData))
         setEmail('')
         setPassword('')
     }
@@ -31,6 +36,7 @@ const StudentLogin=(props)=>{
         <div>
             <hr />
             <h2>Student Login</h2>
+            {studentLoginError && <p style={{color:"red"}}>{studentLoginError}</p> }
             <form onSubmit={handleSubmit}>
                 <input type='text' name='email' value={email} onChange={handleChange} placeholder="Enter ur Email..."/>
                 <br />
