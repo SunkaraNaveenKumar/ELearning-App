@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import jwt_decode from "jwt-decode";
 
 /////////////////////////// admin register
 export const asyncAdminRegister=(formData,props)=>{
@@ -42,9 +42,11 @@ export const stateAdminLogin=(formData,props)=>{
             else
             {
                 props.history.push('/')
-                dispatch(setAdminToggle(true))
                 dispatch(setAdminLogin(''))
                 localStorage.setItem('token',data.token)
+                const token = localStorage.getItem('token');
+                const decoded = jwt_decode(token);
+                dispatch(setAdminorStudent(decoded))
             }
         })
     }
@@ -55,7 +57,7 @@ const setAdminLogin=(error)=>{
         payload:error
     }
 }
-////////////////////////////  login toggle
+////////////////////////////  admin or student login toggle
 export const setAdminToggle=(value)=>{
     return {
         type:'TOGGLE',
@@ -241,9 +243,82 @@ const setStudentDelete=(data)=>{
         payload:data
     }
 }
+////////////////////////////////////// admin add course
+export const stateAdminAddCourse=(formData)=>{
+    return (dispatch)=>{
+        axios.post('https://dct-e-learning.herokuapp.com/api/courses',formData,{
+            headers:{
+                Authorization:localStorage.getItem('token')
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data
+            if(data.hasOwnProperty('errors'))
+            {
+                alert('Invalid Inputs Try with different inputs!')
+            }
+            else
+            {
+                alert('succesfully Created course!')
+            }
+        })
+        .catch((err)=>{
+            alert(err.message)
+        })
+    }
+}
+///////////////////////////////////////////// admin all courses
+
+export const stateAdminAllCourses=()=>{
+    return(dispatch)=>{
+        axios.get('https://dct-e-learning.herokuapp.com/api/courses',{
+            headers:{
+                Authorization:localStorage.getItem('token')
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data
+            dispatch(setAdminAllCourses(data))
+        })
+    }
+}
+const setAdminAllCourses=(data)=>{
+    return{
+        type:"ADMINALLCOURSES",
+        payload:data
+    }
+}
+////////////////////////////////////////// get course info
+export const stateAdminCourseInfo=(id)=>{
+    return (dispatch)=>{
+        axios.get(`https://dct-e-learning.herokuapp.com/api/courses/${id}`,{
+            headers:{
+                Authorization:localStorage.getItem('token')
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data
+            alert(`
+            Course-${data.name}
+            Duration-${data.duration} months
+            Category-${data.category}
+            Validity-${data.validity} years
+            Level-${data.level}
+            Author-${data.author}
+            createdAt-${data.createdAt}
+            updatedAt-${data.updatedAt}
+            `)
+        })
+        .catch((err)=>{
+            alert(err.message)
+        })
+    }
+}
+/////////////////////////////////// admin course edit
+
 ///////////////////////////////////////////////// student 
 /////////////////////////////////////////////// student login
-export const stateStudentLogin=(formData)=>{
+export const stateStudentLogin=(formData,props)=>{
     return (dispatch)=>{
         axios.post('https://dct-e-learning.herokuapp.com/api/students/login',formData)
         .then((Response)=>{
@@ -254,7 +329,12 @@ export const stateStudentLogin=(formData)=>{
             }
             else
             {
+                props.history.push('/')
+                dispatch(setAdminToggle(true))
                 localStorage.setItem('token',data.token)
+                const token = localStorage.getItem('token');
+                const decoded = jwt_decode(token);
+                dispatch(setAdminorStudent(decoded))
             }
         })
     }
@@ -263,5 +343,12 @@ const setStudentLoginError=(error)=>{
     return{
         type:"STUDENTLOGINERROR",
         payload:error
+    }
+}
+///////////////////////////////////////////// admin or student
+export const setAdminorStudent=(data)=>{
+    return {
+        type:"ADMINORSTUDENT",
+        payload:data
     }
 }

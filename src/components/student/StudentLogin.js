@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import {useDispatch,useSelector} from 'react-redux'
 import { stateStudentLogin } from "../../actions/actionCreater";
+
 const StudentLogin=(props)=>{
     const dispatch=useDispatch()
     const studentLoginError=useSelector((state)=>{
@@ -28,7 +29,7 @@ const StudentLogin=(props)=>{
             email,
             password
         }
-        dispatch(stateStudentLogin(formData))
+        dispatch(stateStudentLogin(formData,props))
         setEmail('')
         setPassword('')
     }

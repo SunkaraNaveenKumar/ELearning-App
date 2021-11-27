@@ -10,6 +10,8 @@ const AdminLogin=(props)=>{
     const adminLoginError=useSelector((state)=>{
         return state.adminError.loginError
     })
+    ///////////////////////
+    localStorage.clear()
     ////////////////////
     const handleChange=(e)=>{
         const inputType=e.target.name

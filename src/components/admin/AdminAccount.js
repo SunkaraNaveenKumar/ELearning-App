@@ -37,7 +37,6 @@ const AdminAccount=(props)=>{
         const formData={
             username,
             email,
-            academy:{name:accountData.academy.name}
         }
         dispatch(editAdminAccount(formData))
 }

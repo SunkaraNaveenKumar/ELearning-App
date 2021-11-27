@@ -4,7 +4,8 @@ import App from "./components/common/App";
 import {BrowserRouter} from 'react-router-dom'
 import {Provider} from "react-redux";
 import configureStore from './store/configureStore'
-import { setAdminToggle, stataStudentsList, stateAdminAccount } from './actions/actionCreater';
+import jwt_decode from "jwt-decode";
+import { setAdminorStudent, stataStudentsList, stateAdminAccount,stateAdminAllCourses} from './actions/actionCreater';
 
 const store=configureStore()
 console.log("initialstate",store.getState())
@@ -14,11 +15,20 @@ store.subscribe(()=>{
 const runCallback=()=>{
     if(localStorage.getItem('token'))
 {
-    store.dispatch(stateAdminAccount())
-    store.dispatch(setAdminToggle(true))
-    store.dispatch(stataStudentsList())
+    const token = localStorage.getItem('token');
+    const decoded = jwt_decode(token);
+    if(decoded.role==='admin')
+    {
+        store.dispatch(setAdminorStudent(decoded))
+        store.dispatch(stateAdminAccount()) 
+        store.dispatch(stataStudentsList())  
+       store.dispatch(stateAdminAllCourses())
+    }
+    else
+    {
+        store.dispatch(setAdminorStudent(decoded))
+    }
 }
 }
 runCallback()
-
 ReactDOM.render(<Provider store={store}><BrowserRouter><App /></BrowserRouter></Provider>,document.getElementById('root'))

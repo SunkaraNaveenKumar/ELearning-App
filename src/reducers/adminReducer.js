@@ -5,7 +5,8 @@ const initialstate={
     edittoggle:false,
     studentError:'',
     studentsList:[],
-    account:{}
+    account:{},
+    allCourses:[]
 }
 const adminReducer=(state=initialstate,action)=>{
     switch (action.type) {
@@ -51,6 +52,9 @@ const adminReducer=(state=initialstate,action)=>{
                 return ele._id!==action.payload._id
             })
             return {...state,studentsList:list}
+        }
+        case 'ADMINALLCOURSES':{
+            return {...state,allCourses:action.payload}
         }
         default:{
             return state
