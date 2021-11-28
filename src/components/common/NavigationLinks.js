@@ -16,6 +16,8 @@ import RegisterStudent from "../admin/RegisterStudent";
 import StudentsList from "../admin/StudentsList";
 import AdminAddCourse from "../admin/AdminAddCourse";
 import AdminAllCourses from "../admin/AdminAllCourses";
+import EnrollCourse from "../admin/EnrollCourse";
+import UnEnrollCourse from "../admin/UnEnrollCourse";
 
     /////////////////////////////
     const NavigationLinks=(props)=>{
@@ -82,6 +84,8 @@ import AdminAllCourses from "../admin/AdminAllCourses";
              <Route path="/admin/students/list" component={StudentsList} exact></Route>
              <Route path="/admin/addcourse" component={AdminAddCourse} exact ></Route>
              <Route path="/admin/allcourses" component={AdminAllCourses} exact ></Route>
+             <Route path='/admin/enroll/course' component={EnrollCourse} exact ></Route>
+             <Route path='/admin/unenroll/course' component={UnEnrollCourse} exact ></Route>
              </Switch>
         </div>
     )

@@ -5,7 +5,7 @@ import adminReducer from '../reducers/adminReducer'
 import studentReducer from '../reducers/studentReducer';
 const configureStore=()=>{
     const store=createStore(combineReducers({
-        adminError:adminReducer,
+        adminData:adminReducer,
         studentData:studentReducer,
         adminorstudent:adminorstudentReducer
     }),applyMiddleware(thunk))

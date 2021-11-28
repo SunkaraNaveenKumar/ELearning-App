@@ -1,7 +1,9 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import {useDispatch} from 'react-redux'
-import {stateAdminAddCourse} from '../../actions/actionCreater'
+import {setCourseEditToggle, stateAdminAddCourse, stateAdminCourseEdit} from '../../actions/actionCreater'
 const AdminAddCourse=(props)=>{
+    const {courseEditToggle,course}=props 
+    //////////////////////////
     const dispatch=useDispatch()
     const [name,setName]=useState('')
     const [description,setDescription]=useState('')
@@ -12,6 +14,20 @@ const AdminAddCourse=(props)=>{
     const [level,setLevel]=useState('')
     const [author,setAuthor]=useState('')
     ////////////////////////////
+    useEffect(()=>{
+        if(courseEditToggle)
+        {
+           setName(course.name)
+           setDescription(course.description)
+           setDuration(course.duration)
+           setReleaseDate(course.releaseDate)
+           setCategory(course.category)
+           setValidity(course.validity)
+           setLevel(course.level)
+           setAuthor(course.author)
+        }
+    },[courseEditToggle,course])
+    /////////////////////////////
     const handleChange=(e)=>{
         const inputType=e.target.name
         const inputValue=e.target.value
@@ -51,17 +67,33 @@ const AdminAddCourse=(props)=>{
     ///////////////////////
     const handleSubmit=(e)=>{
         e.preventDefault()
-        const formData={
-            name,
-            description,
-            duration,
-            releaseDate,
-            category,
-            validity,
-            level,
-            author
+        if(courseEditToggle)
+        {
+            const formData={
+                name,
+                description,
+                duration,
+                category,
+                validity,
+                level,
+                author
+            }
+            dispatch(stateAdminCourseEdit(formData,course._id))
         }
-        dispatch(stateAdminAddCourse(formData))
+        else
+        {
+            const formData={
+                name,
+                description,
+                duration,
+                releaseDate,
+                category,
+                validity,
+                level,
+                author
+            }
+            dispatch(stateAdminAddCourse(formData))
+        }
         setName('')
         setDescription('')
         setDuration('')
@@ -73,12 +105,12 @@ const AdminAddCourse=(props)=>{
     }
     return(
         <div>
-            <h2>Add a Course</h2>
+            {courseEditToggle ? <h2>Edit Course</h2>: <h2>Add Course</h2>}
             <form onSubmit={handleSubmit}>
                 <input type='text' name='name' value={name} onChange={handleChange} placeholder='Enter Course Name....' ></input><br/>
                 <textarea name="description" value={description} onChange={handleChange} placeholder="Description...."/> <br/>
                 <input type='text' name='duration' value={duration} onChange={handleChange} placeholder='Duration....' ></input><br/>
-                <input type='text' name='releaseDate' value={releaseDate} onChange={handleChange} placeholder='Release Date....' ></input><br/>
+                {!courseEditToggle&&<><input type='text' name='releaseDate' value={releaseDate} onChange={handleChange} placeholder='Release Date....' ></input><br/></>}
                 <select name="category" value={category} onChange={handleChange}>
                     <option value=''>select</option>
                     <option value='HTML'>HTML</option>
@@ -97,7 +129,17 @@ const AdminAddCourse=(props)=>{
                     <option value='expert'>expert</option>
                 </select> <br/>
                 <input type='text' name='author' value={author} onChange={handleChange} placeholder='Enter author Name....' ></input><br/>
-                <input type='submit' value='Add Course'></input>
+               {courseEditToggle ? (
+               <div>
+                   <button onClick={(e)=>{
+                        handleSubmit(e)
+                       dispatch(setCourseEditToggle(false))
+                       }}>Save</button> 
+                   <button onClick={()=>{dispatch(setCourseEditToggle(false))}}>Cancel</button>
+                </div>
+                ):(
+                <button onClick={handleSubmit}>Add</button>) 
+                }
             </form>
         </div>
     )

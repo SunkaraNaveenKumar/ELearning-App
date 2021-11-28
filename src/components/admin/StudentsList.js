@@ -9,7 +9,7 @@ const StudentsList=(props)=>{
     const [isAllowed,setIsAllowed]=useState(false)
     const [id,setId]=useState('')
     const studentsList=useSelector((state)=>{
-        return state.adminError.studentsList
+        return state.adminData.studentsList
     })
     const [toggle,setToggle]=useState(false)
     /////////////////////
@@ -59,7 +59,7 @@ const StudentsList=(props)=>{
     }
     return(
         <div>
-           <ul>
+            {studentsList.length>0 && <ul>
             {studentsList.map(ele=>{
                 return (
                     <li key={ele._id}>
@@ -71,7 +71,7 @@ const StudentsList=(props)=>{
                     </li>
                   )
             })}
-           </ul>
+           </ul>}
            {toggle ? (
                 <StudentAccountEditForm
                  name={name} 

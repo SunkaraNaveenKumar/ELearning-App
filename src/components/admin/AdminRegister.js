@@ -12,7 +12,7 @@ const AdminRegister=(props)=>{
     const errors={}
     const dispatch=useDispatch()
     const adminRegisterError=useSelector((state)=>{
-        return state.adminError.registerError
+        return state.adminData.registerError
     })
     ////////////////////
     const handleChange=(e)=>{

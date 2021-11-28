@@ -8,7 +8,7 @@ const AdminLogin=(props)=>{
     const errors={}
     const dispatch=useDispatch()
     const adminLoginError=useSelector((state)=>{
-        return state.adminError.loginError
+        return state.adminData.loginError
     })
     ///////////////////////
     localStorage.clear()

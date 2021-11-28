@@ -4,10 +4,10 @@ import { editAdminAccount, setAdminEdit } from "../../actions/actionCreater";
 const AdminAccount=(props)=>{
     const dispatch=useDispatch()
     const accountData=useSelector((state)=>{
-        return state.adminError.account
+        return state.adminData.account
     })
     const edittoggle=useSelector((state)=>{
-        return state.adminError.edittoggle
+        return state.adminData.edittoggle
     })
     const [username,setUsername]=useState(accountData.username)
     const [email,setEmail]=useState(accountData.email)

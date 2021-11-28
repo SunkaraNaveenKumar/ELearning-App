@@ -304,6 +304,7 @@ export const stateAdminCourseInfo=(id)=>{
             Category-${data.category}
             Validity-${data.validity} years
             Level-${data.level}
+            students enrolled-${data.students.length}
             Author-${data.author}
             createdAt-${data.createdAt}
             updatedAt-${data.updatedAt}
@@ -315,7 +316,117 @@ export const stateAdminCourseInfo=(id)=>{
     }
 }
 /////////////////////////////////// admin course edit
-
+export const stateAdminCourseEdit=(formData,id)=>{
+    return(dispatch)=>{
+        axios.put(`https://dct-e-learning.herokuapp.com/api/courses/${id}`,formData,{
+            headers:{
+                Authorization:localStorage.getItem('token')
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data 
+            if(data.hasOwnProperty('errors'))
+            {
+                alert('Try Again With Different Inputs!')
+            }
+            else
+            {
+                dispatch(setAdminAllCourses(data))
+            }
+        })
+        .catch((err)=>{
+            alert(err.message)
+        })
+    }
+}
+/////////////////////////////////////////////admin course edit toggle
+export const setCourseEditToggle=(value)=>{
+    return {
+        type:'COURSEEDITTOGGLE',
+        payload:value
+    }
+}
+///////////////////////////////////////////// admin delete course
+export const stateAdminCourseDelete=(id)=>{
+    return (dispatch)=>{
+        axios.delete(`https://dct-e-learning.herokuapp.com/api/courses/${id}`,{
+            headers:{
+                Authorization:localStorage.getItem('token')
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data
+            dispatch(setAdminCourseDelete(data))
+        })
+        .catch((err)=>{
+            alert(err.message)
+        })
+    }
+}
+const setAdminCourseDelete=(data)=>{
+    return{
+        type:"ADMINCOURSEDELETE",
+        payload:data
+    }
+}
+///////////////////////////////////// admin enroll student to the course
+export const stateEnrollCourse=(data)=>{
+    return (dispatch)=>{
+        axios.patch(`http://dct-e-learning.herokuapp.com/api/courses/enroll?courseId=${data.courseId}&studentId=${data.studentId}`,{},{
+            headers:{
+                Authorization:localStorage.getItem('token'),
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data
+            if(typeof(data)==='string')
+            {
+                alert('already enrolled')
+            }
+            else
+            {
+                if(data.hasOwnProperty('_id'))
+                {
+                    alert('successfully enrolled')
+                    dispatch(setAdminAllCourses(data))
+                }
+                else
+                {
+                    alert('Invalid Inputs')
+                }
+            }
+        })
+        .catch((err)=>{
+            alert(err.message)
+        })
+    }
+}
+////////////////////////////////// admin unenroll course
+export const stateUnEnrollCourse=(data)=>{
+    return (dispatch)=>{
+        axios.patch(`http://dct-e-learning.herokuapp.com/api/courses/unenroll?courseId=${data.courseId}&studentId=${data.studentId}`,{},{
+            headers:{
+                Authorization:localStorage.getItem('token'), 
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data
+            if(data.hasOwnProperty('_id'))
+                {
+                    alert('successfully UnEnrolled')
+                    dispatch(setAdminAllCourses(data))
+                }
+                else
+                {
+                    alert('Invalid Inputs')
+                }
+               
+        })
+        .catch((err)=>{
+            alert(err.meassage)
+        })
+}
+}
 ///////////////////////////////////////////////// student 
 /////////////////////////////////////////////// student login
 export const stateStudentLogin=(formData,props)=>{

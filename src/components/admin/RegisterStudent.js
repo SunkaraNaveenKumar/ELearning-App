@@ -8,7 +8,7 @@ const RegisterStudent=(props)=>{
     const [isAllowed,setAllow]=useState(false)
     const dispatch=useDispatch()
     const studentError=useSelector((state)=>{
-        return state.adminError.studentError
+        return state.adminData.studentError
     })
     /////////////////////////////////
     const handleChange=(e)=>{
