@@ -440,12 +440,14 @@ export const stateStudentLogin=(formData,props)=>{
             }
             else
             {
+                
                 props.history.push('/')
                 dispatch(setAdminToggle(true))
                 localStorage.setItem('token',data.token)
                 const token = localStorage.getItem('token');
                 const decoded = jwt_decode(token);
                 dispatch(setAdminorStudent(decoded))
+                dispatch(stateStudentAccount())
             }
         })
     }
@@ -454,6 +456,65 @@ const setStudentLoginError=(error)=>{
     return{
         type:"STUDENTLOGINERROR",
         payload:error
+    }
+}
+///////////////////////////////////// debug student account
+export const stateStudentAccount=()=>{
+    return(dispatch)=>{
+        const token = localStorage.getItem('token');
+        const decoded = jwt_decode(token);
+        dispatch(setStudentAccount(decoded))
+    }
+}
+const setStudentAccount=(account)=>{
+    return{
+        type:'STUDENTACCOUNT',
+        payload:account
+    }
+}
+///////////////////////////////////// student enroll 
+export const stateStudentEnrollCourse=(courseId)=>{
+    return (dispatch)=>{
+        axios.patch(`https://dct-e-learning.herokuapp.com/api/courses/enroll?courseId=${courseId}`,{},{
+            headers:{
+                Authorization:localStorage.getItem('token'), 
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data
+              if(data.hasOwnProperty('_id'))
+                {
+                    alert('successfully enrolled')
+                    dispatch(setAdminAllCourses(data))
+                }
+                else
+                {
+                    alert('Invalid Inputs')
+                }
+            
+        })
+        .catch((err)=>{
+            alert(err.message)
+        })
+    }
+
+}
+////////////////////////////////// student uneroll course
+export const stateStudentUnEnrollCourse=(courseId)=>{
+    return (dispatch)=>{
+        axios.patch(`https://dct-e-learning.herokuapp.com/api/courses/unenroll?courseId=${courseId}`,{},{
+            headers:{
+                Authorization:localStorage.getItem('token'), 
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data 
+            alert('successfully UnEnrolled')
+            dispatch(setAdminAllCourses(data))
+        })
+        .catch((err)=>{
+            alert(err.message)
+        })
     }
 }
 ///////////////////////////////////////////// admin or student

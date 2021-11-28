@@ -18,6 +18,10 @@ import AdminAddCourse from "../admin/AdminAddCourse";
 import AdminAllCourses from "../admin/AdminAllCourses";
 import EnrollCourse from "../admin/EnrollCourse";
 import UnEnrollCourse from "../admin/UnEnrollCourse";
+import StudentAllCourses from "../student/StudentAllCourses";
+import StudentMyCourses from "../student/StudentMyCourses";
+import StudentCourses from "../student/StudentCourses";
+import StudentAccount from "../student/StudentAccount";
 
     /////////////////////////////
     const NavigationLinks=(props)=>{
@@ -58,6 +62,7 @@ import UnEnrollCourse from "../admin/UnEnrollCourse";
                 {role==='student'&&(
                     <>
                     <Link to='/student/courses'>Courses</Link>|
+                    <Link to='/student/account'>Account</Link>|
                     <Link to=''onClick={()=>{
                          dispatch(setAdminorStudent({}))
                          localStorage.clear()
@@ -86,6 +91,12 @@ import UnEnrollCourse from "../admin/UnEnrollCourse";
              <Route path="/admin/allcourses" component={AdminAllCourses} exact ></Route>
              <Route path='/admin/enroll/course' component={EnrollCourse} exact ></Route>
              <Route path='/admin/unenroll/course' component={UnEnrollCourse} exact ></Route>
+             <Route path='/student/courses' component={StudentCourses} exact ></Route>
+             <Route path='/student/allcourses' component={StudentAllCourses} exact ></Route>
+             <Route path='/student/mycourses' component={StudentMyCourses} exact ></Route>
+             <Route path='/student/account' component={StudentAccount} exact></Route>
+             
+             
              </Switch>
         </div>
     )

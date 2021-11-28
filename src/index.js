@@ -5,7 +5,7 @@ import {BrowserRouter} from 'react-router-dom'
 import {Provider} from "react-redux";
 import configureStore from './store/configureStore'
 import jwt_decode from "jwt-decode";
-import { setAdminorStudent, stataStudentsList, stateAdminAccount,stateAdminAllCourses} from './actions/actionCreater';
+import { setAdminorStudent, stataStudentsList, stateAdminAccount,stateAdminAllCourses,stateStudentAccount} from './actions/actionCreater';
 
 const store=configureStore()
 console.log("initialstate",store.getState())
@@ -26,6 +26,8 @@ const runCallback=()=>{
     }
     else
     {
+        store.dispatch(stateStudentAccount())
+        store.dispatch(stateAdminAllCourses())
         store.dispatch(setAdminorStudent(decoded))
     }
 }
