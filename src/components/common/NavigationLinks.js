@@ -22,6 +22,9 @@ import StudentAllCourses from "../student/StudentAllCourses";
 import StudentMyCourses from "../student/StudentMyCourses";
 import StudentCourses from "../student/StudentCourses";
 import StudentAccount from "../student/StudentAccount";
+import AdminLectures from "../admin/AdminLectures";
+import AdminAddLecture from "../admin/adminAddLecture";
+import AdminAllLectures from "../admin/AdminAllLectures";
 
     /////////////////////////////
     const NavigationLinks=(props)=>{
@@ -51,6 +54,7 @@ import StudentAccount from "../student/StudentAccount";
                     }}>Students</Link>|
                     <Link to='/admin/dashboard'>Dashboard</Link>|
                     <Link to='/admin/courses'>courses</Link>|
+                    <Link to='/admin/lectures'>Lectures</Link>|
                     <Link to='' onClick={()=>{
                         dispatch(setAdminorStudent({}))
                         localStorage.clear()
@@ -91,10 +95,15 @@ import StudentAccount from "../student/StudentAccount";
              <Route path="/admin/allcourses" component={AdminAllCourses} exact ></Route>
              <Route path='/admin/enroll/course' component={EnrollCourse} exact ></Route>
              <Route path='/admin/unenroll/course' component={UnEnrollCourse} exact ></Route>
+             <Route path='/admin/lectures' component={AdminLectures} exact></Route>
+             <Route path='/admin/lectures/addlecture' component={AdminAddLecture} exact></Route>
+             <Route path='/admin/lectures/allectures' component={AdminAllLectures} exact></Route>
+             
              <Route path='/student/courses' component={StudentCourses} exact ></Route>
              <Route path='/student/allcourses' component={StudentAllCourses} exact ></Route>
              <Route path='/student/mycourses' component={StudentMyCourses} exact ></Route>
              <Route path='/student/account' component={StudentAccount} exact></Route>
+             
              
              
              </Switch>
