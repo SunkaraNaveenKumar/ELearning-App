@@ -4,6 +4,7 @@ import { stateUnEnrollCourse } from "../../actions/actionCreater";
 
 const UnEnrollCourse=(props)=>{
     const dispatch=useDispatch()
+    const [valueId,setValueId]=useState('')// unique radio button
     const [studentId,setStudentId]=useState('')
     const allCourses=useSelector((state)=>{
         return state.adminData.allCourses
@@ -12,17 +13,25 @@ const UnEnrollCourse=(props)=>{
         return state.adminData.studentsList
     })
     /////////////////////////
-    const handleChange=(e)=>{
-        setStudentId(e.target.value)
+    const handleChange=(e,ele)=>{
+        setValueId(e.target.value)
+        setStudentId(ele.student)
     }
-    ////////////////////
+    //////////////////////
     const handleUnEnroll=(id)=>{
         const data={
             courseId:id,
             studentId
         }
-        console.log(data)
+        setStudentId('')
         dispatch(stateUnEnrollCourse(data))
+    }
+    /////////////////////////
+    const callBack=(ele)=>{
+        const findStudent=studentsList.find(stu=>{
+            return stu._id===ele.student
+         })
+         return findStudent
     }
     return(
         <div>
@@ -45,11 +54,15 @@ const UnEnrollCourse=(props)=>{
                                          {course.students.map(ele=>{
                                              return (
                                                  <li key={ele._id}>
-                                                    {studentsList.length>0 && <>{studentsList.find(student=>{
-                                                       return student._id===ele.student
-                                                    }).email}</>} 
+                                                    {studentsList.length>0 && <>{callBack(ele).email}</>} 
                                                     
-                                                  <input type='radio' name={course.name} value={ele.student} checked={studentId===ele.student} onChange={handleChange}></input>   
+                                                  <input
+                                                   type='radio' 
+                                                   name={course.name} 
+                                                   value={ele._id} 
+                                                   checked={valueId===ele._id} 
+                                                   onChange={(e)=>handleChange(e,ele)}
+                                                   ></input>   
                                                  </li>
                                              )
                                          })}
