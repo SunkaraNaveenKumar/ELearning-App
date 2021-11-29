@@ -7,7 +7,9 @@ const initialstate={
     studentsList:[],
     account:{},
     allCourses:[],
-    courseEditToggle:false
+    courseEditToggle:false,
+    courseLectures:[],
+    editLecture:{}
 }
 const adminReducer=(state=initialstate,action)=>{
     switch (action.type) {
@@ -85,6 +87,38 @@ const adminReducer=(state=initialstate,action)=>{
                 return ele._id!==action.payload._id
             })
             return {...state,allCourses:list}
+        }
+        case "ADMINCOURSELECTURES":{
+            const flag=state.courseLectures.every(ele=>{
+                return ele._id!==action.payload._id
+            })
+            if(flag)
+            {
+                return {...state,courseLectures:action.payload}
+            }
+            else
+            {
+                const list=state.courseLectures.map(ele=>{
+                    if(ele._id===action.payload._id)
+                    {
+                        return {...ele,...action.payload}
+                    }
+                    else
+                    {
+                        return {...ele}
+                    }
+                })
+                return {...state,courseLectures:list}
+            }
+        }
+        case "EDITLECTURE":{
+            return {...state,editLecture:action.payload}
+        }
+        case "ADMINLECTUREDELETE":{
+            const list=state.courseLectures.filter(lecture=>{
+                return lecture._id!==action.payload._id
+            })
+            return {...state,courseLectures:list}
         }
         default:{
             return state

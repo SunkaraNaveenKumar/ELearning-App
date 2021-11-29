@@ -25,6 +25,8 @@ import StudentAccount from "../student/StudentAccount";
 import AdminLectures from "../admin/AdminLectures";
 import AdminAddLecture from "../admin/adminAddLecture";
 import AdminAllLectures from "../admin/AdminAllLectures";
+import LectureList from "../admin/LectureList";
+import StudentViewLectures from "../student/StudentViewLectures";
 
     /////////////////////////////
     const NavigationLinks=(props)=>{
@@ -97,12 +99,13 @@ import AdminAllLectures from "../admin/AdminAllLectures";
              <Route path='/admin/unenroll/course' component={UnEnrollCourse} exact ></Route>
              <Route path='/admin/lectures' component={AdminLectures} exact></Route>
              <Route path='/admin/lectures/addlecture' component={AdminAddLecture} exact></Route>
-             <Route path='/admin/lectures/allectures' component={AdminAllLectures} exact></Route>
-             
+             <Route path='/admin/lectures/alllectures' component={AdminAllLectures} exact></Route>
+             <Route path='/admin/lectures/alllectures/:id' component={LectureList} exact></Route>
              <Route path='/student/courses' component={StudentCourses} exact ></Route>
              <Route path='/student/allcourses' component={StudentAllCourses} exact ></Route>
              <Route path='/student/mycourses' component={StudentMyCourses} exact ></Route>
              <Route path='/student/account' component={StudentAccount} exact></Route>
+             <Route path='/student/mycourses/lectures/:id' component={StudentViewLectures} exact></Route>
              
              
              

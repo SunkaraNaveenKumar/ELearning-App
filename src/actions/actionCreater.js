@@ -427,6 +427,121 @@ export const stateUnEnrollCourse=(data)=>{
         })
 }
 }
+///////////////////////////////////// admin add lecture
+export const stateAdminAddLecture=(formData,id)=>{
+    return(dispatch)=>{
+        axios.post(`https://dct-e-learning.herokuapp.com/api/courses/${id}/lectures`,formData,{
+            headers:{
+                Authorization:localStorage.getItem('token'), 
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data 
+            if(data.hasOwnProperty('errors'))
+            {
+                alert('invalid inputs')
+            }
+            else
+            {
+                alert(`successfully added this lectures to id:${id}`)
+            }
+        })
+    }
+}
+/////////////////////////////// admin all lectures
+export const stateAdminCourseLectures=(id)=>{
+    return (dispatch)=>{
+        axios.get(`https://dct-e-learning.herokuapp.com/api/courses/${id}/lectures`,{
+            headers:{
+                Authorization:localStorage.getItem('token'), 
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data 
+            dispatch(setAdminCourseLectures(data))
+        })
+    }
+}
+const setAdminCourseLectures=(data)=>{
+    return{
+        type:"ADMINCOURSELECTURES",
+        payload:data
+    }
+}
+//////////////////////////////////////////////// Admin Lecture View
+export const stateAdminLectureView=(courseId,lectureId)=>{
+    return(dispatch)=>{
+        axios.get(`https://dct-e-learning.herokuapp.com/api/courses/${courseId}/lectures/${lectureId}`,{
+            headers:{
+                Authorization:localStorage.getItem('token'), 
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data
+            alert(`
+            'Title':${data.title}
+            "description":${data.description}
+            "assetType":${data.assetType}
+            "assetURL":${data.assetURL}
+            "isDelete":${data.isDelete}
+            "createdAt":${data.createdAt}
+            "updatedAt":${data.updatedAt}
+            `)
+        })
+        .catch((err)=>{
+            alert(err.message)
+        })
+    }
+}
+///////////////////////////////////////////// set edit lecture
+export const setEditLecture=(data)=>{
+    return{
+        type:"EDITLECTURE",
+        payload:data
+    }
+}
+//////////////////////////////////////// state edit lecture
+export const stateAdminLectureEdit=(formData,courseId,lectureId)=>{
+    return (dispatch)=>{
+        axios.put(`https://dct-e-learning.herokuapp.com/api/courses/${courseId}/lectures/${lectureId}`,formData,{
+            headers:{
+                Authorization:localStorage.getItem('token'), 
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data 
+            dispatch(setAdminCourseLectures(data))
+        })
+        .catch((err)=>{
+            alert(err.message)
+        })
+    }
+}
+//////////////////////////////////////////////delete admin lecture
+export const stateAdminLectureDelete=(courseId,lectureId)=>{
+    return(dispatch)=>{
+        axios.delete(`https://dct-e-learning.herokuapp.com/api/courses/${courseId}/lectures/${lectureId}`,{
+            headers:{
+                Authorization:localStorage.getItem('token'), 
+            }
+        })
+        .then((Response)=>{
+            const data=Response.data 
+            dispatch(setAdminLectureDelete(data))
+            alert('successfully deleted!')
+        })
+        .catch((err)=>{
+            alert(err.message)
+        })
+    }
+
+}
+const setAdminLectureDelete=(data)=>{
+    return{
+        type:"ADMINLECTUREDELETE",
+        payload:data
+    }
+}
 ///////////////////////////////////////////////// student 
 /////////////////////////////////////////////// student login
 export const stateStudentLogin=(formData,props)=>{

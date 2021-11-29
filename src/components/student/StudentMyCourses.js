@@ -1,6 +1,8 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { stateAdminCourseLectures } from "../../actions/actionCreater";
 const StudentMyCourses=(props)=>{
+    const dispatch=useDispatch()
     const allCourses=useSelector((state)=>{
         return state.adminData.allCourses
     })
@@ -23,6 +25,7 @@ const StudentMyCourses=(props)=>{
                         <th>Level</th>
                         <th>Author</th>
                         <th>No of Students Taken This Course</th>
+                        <th>Lectures</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,6 +41,10 @@ const StudentMyCourses=(props)=>{
                                      <td>{course.level}</td>
                                      <td>{course.author}</td>
                                      <td>{course.students.length}</td>
+                                     <td><button onClick={()=>{
+                                         dispatch(stateAdminCourseLectures(course._id))
+                                         props.history.push(`/student/mycourses/lectures/${course._id}`)
+                                     }}>View Lectures</button></td>
                                     </>
                                 )}
                             </tr>

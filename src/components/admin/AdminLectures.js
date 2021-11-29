@@ -4,7 +4,7 @@ const AdminLectures=(props)=>{
     return(
         <div>
             <Link to='/admin/lectures/addlecture'>Add Lecture</Link>|
-            <Link to='/admin/lectures/allectures'>All Lectures</Link>
+            <Link to='/admin/lectures/alllectures'>All Lectures</Link>
         </div>
     )
 }
