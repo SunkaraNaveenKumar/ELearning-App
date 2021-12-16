@@ -79,11 +79,8 @@ const LectureList=(props)=>{
                             </Grid>
                             </>
                         )}
-                         
                         </>
-                    )}
-                   
-                    
+                    )}      
                 </Grid>
            </Grid>
         </div>

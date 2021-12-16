@@ -1,7 +1,14 @@
 import React,{useState} from "react";
 import {useDispatch,useSelector} from 'react-redux'
 import { stateStudentRegister } from "../../actions/actionCreater";
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import useStyles from "../Styling";
+import { Typography,Button } from "@material-ui/core";
+import Checkbox from '@material-ui/core/Checkbox';
+///////////////////////////////
 const RegisterStudent=(props)=>{
+    const classes=useStyles()
     const [name,setUsername]=useState('')
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
@@ -40,7 +47,6 @@ const RegisterStudent=(props)=>{
             password,
             isAllowed
         }
-        console.log(formData)
         dispatch(stateStudentRegister(formData))
         setUsername('')
         setEmail('')
@@ -48,21 +54,60 @@ const RegisterStudent=(props)=>{
         setAllow(false)
     }
     return(
-        <div>
-            <hr />
-            <h2>Register Student</h2>
-            {studentError &&  <p style={{color:'red'}}>{studentError}</p>}          
-            <form onSubmit={handleSubmit}>
-                <input type='text' name='name' value={name} onChange={handleChange} placeholder='Enter name..'></input>
-                <br />
-                <input type='text' name='email' value={email} onChange={handleChange} placeholder='Enter email..'></input>
-                <br />
-                <input type='text' name='password' value={password} onChange={handleChange} placeholder='Enter password..'></input>
-                <br />
-                <input type='checkbox' name='allow'  checked={isAllowed} onChange={handleChange} ></input> Allow
-                <br />
-                <input type='submit' value='register'></input>
-            </form>
+        <div className={classes.mainStudentRegister} >
+            <Grid container xs={3}>
+                <img  className={classes.studentsImg} src='https://image.shutterstock.com/image-photo/group-students-smiling-standing-together-260nw-713463466.jpg' alt='studentsList'></img>
+            </Grid>
+            <Grid container className={classes.studentRegister} xs={6} spacing={2}>
+            <Grid item >
+               <Typography variant='h4'>Register a Student</Typography>
+            </Grid>
+            <Grid item>
+            {studentError &&  <p style={{color:'red'}}>{studentError}</p>}  
+            </Grid>
+            <Grid item>
+            <TextField
+                     id="outlined-basic" 
+                     name='name'
+                     label="name..." 
+                     value={name}
+                     onChange={handleChange}
+                     variant="outlined" 
+                     />
+            </Grid>
+            <Grid item>
+            <TextField
+                     id="outlined-basic" 
+                     name='email'
+                     label="Email..." 
+                     value={email}
+                     onChange={handleChange}
+                     variant="outlined" 
+                     />
+            </Grid>
+            <Grid item>
+            <TextField
+                     id="outlined-basic" 
+                     name='password'
+                     label="password" 
+                     value={password}
+                     onChange={handleChange}
+                     variant="outlined" 
+                     />
+            </Grid>
+            <Grid item>
+            <Checkbox
+                    color="primary"
+                    name='allow' 
+                    checked={isAllowed} 
+                    onChange={handleChange}
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                /> Allow
+            </Grid>
+            <Grid item >
+            <Button variant='contained' color='secondary' onClick={handleSubmit}>Register</Button>
+            </Grid>
+            </Grid>
         </div>
     )
 }

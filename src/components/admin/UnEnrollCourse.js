@@ -1,9 +1,25 @@
 import React,{useState} from "react";
+import { Link } from "react-router-dom";
 import {useSelector,useDispatch} from 'react-redux'
 import { stateUnEnrollCourse } from "../../actions/actionCreater";
-
+import { Grid } from "@material-ui/core";
+import useStyles from "../Styling";
+import { Typography } from "@material-ui/core";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { Button } from "@material-ui/core";
+import Radio from '@material-ui/core/Radio';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+/////////////////////////////////////////////
+import { StyledTableCell,StyledTableRow } from "../styleTable";
+  ////////////////////////////////
 const UnEnrollCourse=(props)=>{
     const dispatch=useDispatch()
+    const classes=useStyles()
     const [valueId,setValueId]=useState('')// unique radio button
     const [studentId,setStudentId]=useState('')
     const allCourses=useSelector((state)=>{
@@ -31,39 +47,60 @@ const UnEnrollCourse=(props)=>{
         const findStudent=studentsList.find(stu=>{
             return stu._id===ele.student
          })
-         return findStudent
+         if(findStudent===undefined)
+         {
+             return {email:'Deleted Student(Plz unenroll)'}
+         }
+         else
+         {
+            return findStudent
+         }
     }
+    ///////////////
+    const callBackEnroll=()=>{
+        const toggle=allCourses.some(ele=>{
+            return ele.students.length>0
+        })
+        return toggle
+    }
+    /////////////////
     return(
-        <div>
-            <table border='1'>
-                    <thead>
-                        <tr>
-                            <th>Course</th>
-                            <th>Student Enrolled</th>
-                            <th>UnEnroll</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {allCourses.map(course=>{
-                        return (
-                            <tr key={course._id}>
-                                <td>{course.name}</td>
-                                <td>
-                                    {course.students.length>0?(
-                                         <ul>
-                                         {course.students.map(ele=>{
-                                             return (
-                                                 <li key={ele._id}>
+        <>
+        <div className={classes.unEnroll}>
+            <Grid container className={classes.unEnroll1}>
+            <Grid item>
+            {callBackEnroll() ?(
+                        <>
+                        <TableContainer component={Paper}>
+                            <Table className={classes.table} aria-label="customized table">
+                                <TableHead>
+                                    <TableRow>
+                                        <StyledTableCell>Course</StyledTableCell>
+                                        <StyledTableCell align="left">Student Enrolled</StyledTableCell>
+                                        <StyledTableCell align="left">select a student</StyledTableCell>
+                                        
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {allCourses.map((course) => (
+                                        <StyledTableRow key={course._id}>
+                                            <StyledTableCell component="th" scope="row">
+                                                {course.name}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="left">
+                                            {course.students.length>0?(
+                                    <ul>
+                                        {course.students.map(ele=>{
+                                            return (
+                                                <li key={ele._id}>
                                                     {studentsList.length>0 && <>{callBack(ele).email}</>} 
-                                                    
-                                                  <input
-                                                   type='radio' 
-                                                   name={course.name} 
-                                                   value={ele._id} 
-                                                   checked={valueId===ele._id} 
-                                                   onChange={(e)=>handleChange(e,ele)}
-                                                   ></input>   
-                                                 </li>
+                                                    <FormControlLabel
+                                                        name={course.name} 
+                                                        value={ele._id} 
+                                                        onChange={(e)=>handleChange(e,ele)}
+                                                        checked={valueId===ele._id}
+                                                        control={<Radio />}/>
+                                                </li>
                                              )
                                          })}
                                      </ul>
@@ -72,20 +109,37 @@ const UnEnrollCourse=(props)=>{
                                         <p>No Students Enrolled to this Course</p>
                                         </>
                                     )}
-                                </td>
-                                <td>
-                                {course.students.length>0 ?(
-                                <button onClick={()=>handleUnEnroll(course._id)}>UnEnroll</button>
+                                            </StyledTableCell>
+                                            <StyledTableCell align="left">
+                                            {course.students.length>0 ?(
+                                            <Button variant='contained'  onClick={()=>handleUnEnroll(course._id)}>
+                                                UnEnroll
+                                            </Button>
                                 ):(
                                 <p>No students to UnEnroll</p>
                                 )}
-                                </td>
-                            </tr>
-                    )})}
-                    </tbody>
-                </table>
-          
+                                            </StyledTableCell>              
+                                        </StyledTableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </>
+                    ):(
+                        <>
+                        <Grid item classname={classes.unEnrollNote}>
+                            <Typography variant='h5'>
+                            No students enrolled to  courses,to enroll ? <Link to="/admin/enroll/course">click</Link>
+                            </Typography>
+                            </Grid>
+                        </>
+                    )
+                }
+            </Grid>
+            </Grid>
+           
         </div>
+        </>
     )
 }
 export default UnEnrollCourse

@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector,useDispatch } from "react-redux";
 import { stateAdminCourseLectures } from "../../actions/actionCreater";
+import { Link } from "react-router-dom";
 const StudentMyCourses=(props)=>{
     const dispatch=useDispatch()
     const allCourses=useSelector((state)=>{
@@ -9,18 +10,21 @@ const StudentMyCourses=(props)=>{
     const accountId=useSelector((state)=>{
         return state.studentData.studentAccount._id
     })
+    //////////////////////////
     const callToggle=(course)=>{
         const bool=course.students.some(ele=>ele.student===accountId)
         return bool
     }
+    /////////////////////////
+    
     return(
         <div>
-            <table border='1'>
+                 <table border='1'>
                 <thead>
                     <tr>
                         <th>Course</th>
-                        <th>Duration</th>
-                        <th>Validity</th>
+                        <th>Duration( months)</th>
+                        <th>Validity( years )</th>
                         <th>Category</th>
                         <th>Level</th>
                         <th>Author</th>
@@ -35,8 +39,8 @@ const StudentMyCourses=(props)=>{
                                 {callToggle(course) && (
                                     <>
                                      <td>{course.name}</td>
-                                     <td>{course.duration} months</td>
-                                     <td>{course.validity} years</td>
+                                     <td>{course.duration}</td>
+                                     <td>{course.validity}</td>
                                      <td>{course.category}</td>
                                      <td>{course.level}</td>
                                      <td>{course.author}</td>
@@ -52,6 +56,7 @@ const StudentMyCourses=(props)=>{
                     })}
                 </tbody>
             </table>
+
         </div>
     )
 }

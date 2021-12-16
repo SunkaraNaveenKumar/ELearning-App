@@ -1,8 +1,26 @@
 import React,{useState} from "react";
+import { Link } from "react-router-dom";
 import {useSelector,useDispatch} from 'react-redux'
 import {stateStudentInfo,stateStudentAccountEdit,stateStudentDelete} from "../../actions/actionCreater";
 import StudentAccountEditForm from './StudentAccountEditForm'
+import Grid from '@material-ui/core/Grid';
+import useStyles from "../Styling";
+import { Typography } from "@material-ui/core";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+///////////////////////////////////////////
+import { StyledTableCell,StyledTableRow } from "../styleTable";
+///////////////////////////////////  
 const StudentsList=(props)=>{
+    const classes=useStyles();
     const dispatch=useDispatch()
     const [name,setName]=useState('')
     const [email,setEmail]=useState('')
@@ -58,21 +76,67 @@ const StudentsList=(props)=>{
         }
     }
     return(
-        <div>
-            {studentsList.length>0 && <ul>
-            {studentsList.map(ele=>{
-                return (
-                    <li key={ele._id}>
-                        {ele.name},
-                        {ele.email}
-                        <button onClick={()=>{dispatch(stateStudentInfo(ele._id))}}>View Details</button>
-                        <button onClick={()=>{handleEdit(ele)}}>Edit</button>
-                        <button onClick={()=>{handleDelete(ele)}}>Delete</button>
-                    </li>
-                  )
-            })}
-           </ul>}
-           {toggle ? (
+        <div className={classes.student10}>
+            <Grid container className={classes.students}>
+                <Grid item className={classes.students1} xs={8}>
+                    {studentsList.length>0 ?(
+                        <>
+                        <TableContainer component={Paper}>
+                            <Table className={classes.table} aria-label="customized table">
+                                <TableHead>
+                                    <TableRow>
+                                        <StyledTableCell>Name</StyledTableCell>
+                                        <StyledTableCell align="right">Email</StyledTableCell>
+                                        <StyledTableCell align="right">View Details</StyledTableCell>
+                                        <StyledTableCell align="right">Edit</StyledTableCell>
+                                        <StyledTableCell align="right">Delete</StyledTableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {studentsList.map((ele) => (
+                                        <StyledTableRow key={ele._id}>
+                                            <StyledTableCell component="th" scope="row">
+                                                {ele.name}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="right">{ele.email}</StyledTableCell>
+                                            <StyledTableCell align="right">
+                                            <IconButton  onClick={()=>{
+                                                dispatch(stateStudentInfo(ele._id))
+                                                }}>
+                                                <VisibilityIcon />
+                                            </IconButton>
+                                            </StyledTableCell>
+                                            <StyledTableCell align="right">
+                                                <IconButton onClick={()=>{
+                                                    handleEdit(ele)
+                                                    }}>
+                                                    <EditIcon color='primary'></EditIcon>
+                                                </IconButton>                   
+                                            </StyledTableCell>
+                                            <StyledTableCell align="right">
+                                            <IconButton onClick={()=>{
+                                                    handleDelete(ele)
+                                                    }}>
+                                               <DeleteIcon color='secondary'></DeleteIcon>
+                                            </IconButton>
+                                            </StyledTableCell>
+                                        </StyledTableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </>
+                    ):(
+                        <>
+                            <Typography variant='h5'>
+                                No Students yet,to register? <Link to='/admin/students/register'>Click</Link>
+                            </Typography>
+                        </>
+                    )
+                    }
+                </Grid>
+                <Grid item className={classes.students1} xs={4}>
+                {toggle ? (
                 <StudentAccountEditForm
                  name={name} 
                  email={email} 
@@ -82,8 +146,19 @@ const StudentsList=(props)=>{
                  handleCancel={handleCancel}
                  />
            ):(
-               <h2>Click On Edit To Edit Any Student Info</h2>
+               <>
+               <Grid item>
+                  {studentsList.length>0 && (
+                  <Typography variant='h4' color='secondary'>
+                      Click On Edit To Edit Any Student Info
+                    </Typography>
+                    )}
+                </Grid>
+               </>
+               
            )}
+                </Grid>
+            </Grid>
         </div>
     )
 }

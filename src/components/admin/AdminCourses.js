@@ -1,14 +1,33 @@
 import React from "react";
-import {Link} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import { stateAdminAllCourses } from "../../actions/actionCreater";
+import { Button } from "@material-ui/core";
+import useStyles from "../Styling";
 const AdminCourses=(props)=>{
+    const classes=useStyles();
     const dispatch=useDispatch()
     return(
-        <div>
-            <hr />
-            <Link to="/admin/addcourse">Create a Course</Link>|
-            <Link to="/admin/allcourses" onClick={()=>{dispatch(stateAdminAllCourses())}}>ALL courses</Link>
+        <div className={classes.student11}>
+            <Button
+                className={classes.studentReg}
+                variant='contained'
+                color='primary'
+                onClick={()=>{
+                props.history.push("/admin/addcourse")
+                dispatch(stateAdminAllCourses())
+            }}>
+            Create Course
+            </Button> <br/>
+            <Button
+                className={classes.studentsList}
+                variant='contained'
+                color='secondary'
+                onClick={()=>{
+                props.history.push("/admin/allcourses")
+                dispatch(stateAdminAllCourses())
+            }}>
+            All Courses
+            </Button>
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { setEditLecture, stateAdminAddLecture, stateAdminLectureEdit } from "../../actions/actionCreater";
-
+import { Link } from "react-router-dom";
 const AdminAddLecture=(props)=>{
     const {id}=props
    const editLecture=useSelector((state)=>{
@@ -25,7 +25,7 @@ const AdminAddLecture=(props)=>{
         setDescription(editLecture.description)
         setAssetType(editLecture.assetType)
         setAssetURL(editLecture.assetURL)
-        setIsDelete(editLecture.isDelete)
+        setIsDelete(`${editLecture.isDelete}`)
         }
     },[editLecture])
     //////////////////////////////
@@ -86,14 +86,17 @@ const AdminAddLecture=(props)=>{
     //////////////////////////////////////
     return(
         <div>
-              {Object.keys(editLecture).length>0 ?(
+              {Object.keys(editLecture).length>0 ?( // editLecture is because we are using this component for adding a lecture
+                                                    // aswell as for editing a lecture
                     <>
                     <h2>Edit a Lecture</h2>
                     </>
                 ):(
                     <>
                      <h1>Select Any One of the Course to which Lecture should be added</h1>
-                     <ul>
+                     {allCourses.length>0 ?(
+                         <>
+                          <ul>
                          {allCourses.map(course=>{
                              return (
                              <li key={course._id}>
@@ -110,6 +113,12 @@ const AdminAddLecture=(props)=>{
                                   )
                                   })}
                     </ul>
+                         </>
+                     ):(
+                         <>
+                         No Courses,create a course?<Link to='/admin/addcourse'>click</Link>
+                         </>
+                     )}
                     <h2>Add a Lecture</h2>
                     </>
                 )}
@@ -138,7 +147,7 @@ const AdminAddLecture=(props)=>{
              type='radio' 
              name='isDelete' 
              id='isDelete' 
-             value="false" 
+             value='false'
              checked={isDelete==="false"}
              onChange={handleChange}
              ></input>false <br/>

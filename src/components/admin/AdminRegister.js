@@ -2,7 +2,13 @@ import React,{useState} from "react";
 import {Link} from 'react-router-dom' 
 import {useDispatch,useSelector} from 'react-redux'
 import { asyncAdminRegister } from "../../actions/actionCreater";
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import useStyles from "../Styling";
+import { Typography,Button } from "@material-ui/core";
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 const AdminRegister=(props)=>{
+    const classes=useStyles()
     const [username,setUsername]=useState('')
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
@@ -83,29 +89,76 @@ const AdminRegister=(props)=>{
         
     }
     return(
-        <div>
-            <hr />
-            <h2>Admin Register</h2>
-            {adminRegisterError && <p style={{color:"red"}}>{adminRegisterError}</p>}
-            <form onSubmit={handleSubmit}>
-                <input type='text' name='username' value={username} onChange={handleChange} placeholder="Enter Your Name..." /> 
+        <div className={classes.Login}>
+              <Grid container  spacing={2} className={classes.LoginForm}>
+                <Grid item>
+                <LockOpenIcon style={{fontSize:'30px'}}/>
+                </Grid>
+                <Grid item xs={6}>
+                    {adminRegisterError && <p style={{color:"red"}}>{adminRegisterError}</p> }
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant='h4' className={classes.loginText}>Register</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                     id="outlined-basic" 
+                     name='username'
+                     label="username..." 
+                     value={username}
+                     onChange={handleChange}
+                     variant="outlined" 
+                     />
+                </Grid>
                 {formErrors.username && <p style={{color:"red"}}>{formErrors.username}</p>}
-                <br />
-                <input type='text' name='email' value={email} onChange={handleChange} placeholder="Enter Your Email..." /> 
+                <Grid item xs={6}>
+                    <TextField
+                     id="outlined-basic" 
+                     label="email..."
+                     name='email'
+                     value={email}
+                     onChange={handleChange}
+                     variant="outlined" />
+                </Grid>
                 {formErrors.email && <p style={{color:"red"}}>{formErrors.email}</p>}
-                <br />
-                <input type='text' name='password' value={password} onChange={handleChange} placeholder="pasword..." /> 
+                <Grid item xs={6}>
+                    <TextField
+                     id="outlined-basic" 
+                     label="password..."
+                     name='password'
+                     value={password}
+                     onChange={handleChange}
+                     variant="outlined" />
+                </Grid>
                 {formErrors.password && <p style={{color:"red"}}>{formErrors.password}</p>}
-                <br />
-                <input type='text' name='academy' value={academy} onChange={handleChange} placeholder="Enter Your Academy Name..." />
+                <Grid item xs={6}>
+                    <TextField
+                     id="outlined-basic" 
+                     label="academy name..."
+                     name='academy'
+                     value={academy}
+                     onChange={handleChange}
+                     variant="outlined" />
+                </Grid>
                 {formErrors.academy && <p style={{color:"red"}}>{formErrors.academy}</p>}
-                <br />
-                <input type='text' name='website' value={website} onChange={handleChange} placeholder="website..." />
-                <span>(Optional)</span>
-                <br />
-                <input type='submit' value='register' />
-            </form> <br />
-            <span>Already Registered?</span><span><Link to='/admin/login'>Login</Link></span>
+                <Grid item xs={6}>
+                    <TextField
+                     id="outlined-basic" 
+                     label="Website... (Optional)"
+                     name='website'
+                     value={website}
+                     onChange={handleChange}
+                     variant="outlined" />
+                     
+                </Grid>
+                <Grid item xs={6}>
+                    <Button variant='contained' color='secondary' onClick={handleSubmit}>Register</Button>
+                </Grid>
+                <Grid item>
+                    <span>Already Registered?</span><span><Link to='/admin/login'>Login</Link></span>
+                </Grid>
+            </Grid>
+           
         </div>
     )
 }

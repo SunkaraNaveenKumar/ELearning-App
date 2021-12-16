@@ -1,5 +1,6 @@
 import axios from 'axios'
 import jwt_decode from "jwt-decode";
+import swal from 'sweetalert';
 
 /////////////////////////// admin register
 export const asyncAdminRegister=(formData,props)=>{
@@ -55,13 +56,6 @@ const setAdminLogin=(error)=>{
     return{
         type:"ADMINLOGIN",
         payload:error
-    }
-}
-////////////////////////////  admin or student login toggle
-export const setAdminToggle=(value)=>{
-    return {
-        type:'TOGGLE',
-        payload:value
     }
 }
 /////////////////////////////////// admin account
@@ -131,7 +125,7 @@ export const stateStudentRegister=(formData)=>{
             {
                 dispatch(setStudentRegister(''))
                 dispatch(setStudentList(data))
-                alert('student registered successfully')
+                swal("Good Job!", "you Successfully registered a student", "success");
             }
            
         })
@@ -186,6 +180,7 @@ export const stateStudentInfo=(id)=>{
         .then((Response)=>{
             const data=Response.data
             alert(`
+            id        -${data._id}
             Name      -${data.name}
             Email     -${data.email}
             Role      -${data.role}
@@ -231,6 +226,7 @@ export const stateStudentDelete=(id)=>{
         .then((Response)=>{
             const data=Response.data
             dispatch(setStudentDelete(data))
+            swal("Success!", "you Successfully deleted a student", "success");
         })
         .catch((err)=>{
             alert(err.message)
@@ -259,7 +255,7 @@ export const stateAdminAddCourse=(formData)=>{
             }
             else
             {
-                alert('succesfully Created course!')
+                swal("Good Job!", "you Successfully created a course", "success");
             }
         })
         .catch((err)=>{
@@ -357,6 +353,7 @@ export const stateAdminCourseDelete=(id)=>{
         .then((Response)=>{
             const data=Response.data
             dispatch(setAdminCourseDelete(data))
+            swal("Deleted!", "you Successfully deleted a course", "success");
         })
         .catch((err)=>{
             alert(err.message)
@@ -387,7 +384,7 @@ export const stateEnrollCourse=(data)=>{
             {
                 if(data.hasOwnProperty('_id'))
                 {
-                    alert('successfully enrolled')
+                    swal("Enrolled!", "Successfully Enrolled a student to the course", "success");
                     dispatch(setAdminAllCourses(data))
                 }
                 else
@@ -413,7 +410,7 @@ export const stateUnEnrollCourse=(data)=>{
             const data=Response.data
             if(data.hasOwnProperty('_id'))
                 {
-                    alert('successfully UnEnrolled')
+                    swal("UnEnrolled!", "you Successfully UnEnrolled a student from the course", "success");
                     dispatch(setAdminAllCourses(data))
                 }
                 else
@@ -443,7 +440,7 @@ export const stateAdminAddLecture=(formData,id)=>{
             }
             else
             {
-                alert(`successfully added this lectures to id:${id}`)
+                swal("Good Job!", "you Successfully added a lecture", "success");
             }
         })
     }
@@ -528,7 +525,7 @@ export const stateAdminLectureDelete=(courseId,lectureId)=>{
         .then((Response)=>{
             const data=Response.data 
             dispatch(setAdminLectureDelete(data))
-            alert('successfully deleted!')
+            swal("Deleted!", "you Successfully deleted a lecture from the course", "success");
         })
         .catch((err)=>{
             alert(err.message)
@@ -555,9 +552,8 @@ export const stateStudentLogin=(formData,props)=>{
             }
             else
             {
-                
+                dispatch(setStudentLoginError(''))
                 props.history.push('/')
-                dispatch(setAdminToggle(true))
                 localStorage.setItem('token',data.token)
                 const token = localStorage.getItem('token');
                 const decoded = jwt_decode(token);
@@ -599,7 +595,7 @@ export const stateStudentEnrollCourse=(courseId)=>{
             const data=Response.data
               if(data.hasOwnProperty('_id'))
                 {
-                    alert('successfully enrolled')
+                    swal("Good Job!", "you Successfully enrolled to a course ", "success");
                     dispatch(setAdminAllCourses(data))
                 }
                 else
@@ -624,7 +620,7 @@ export const stateStudentUnEnrollCourse=(courseId)=>{
         })
         .then((Response)=>{
             const data=Response.data 
-            alert('successfully UnEnrolled')
+            swal("UnEnrolled!", "you Successfully UnEnrolled to a course", "success");
             dispatch(setAdminAllCourses(data))
         })
         .catch((err)=>{
@@ -639,3 +635,4 @@ export const setAdminorStudent=(data)=>{
         payload:data
     }
 }
+////////////////////////////

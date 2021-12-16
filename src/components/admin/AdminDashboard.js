@@ -1,13 +1,34 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { stateAdminAllCourses } from "../../actions/actionCreater";
+import {  stateAdminAllCourses } from "../../actions/actionCreater";
 import { useDispatch } from "react-redux";
+import { Button } from "@material-ui/core";
+import useStyles from "../Styling";
+
 const AdminDashboard=(props)=>{
+    const classes=useStyles();
     const dispatch=useDispatch()
     return (
-        <div>
-            <Link to='/admin/enroll/course' onClick={()=>{dispatch(stateAdminAllCourses())}}>Enroll Course</Link>|
-            <Link to='/admin/unenroll/course' onClick={()=>{dispatch(stateAdminAllCourses())}}>UnEnroll Course</Link>
+        <div className={classes.student11}>
+            <Button
+                className={classes.studentReg}
+                variant='contained'
+                color='primary'
+                onClick={()=>{
+                props.history.push('/admin/enroll/course')
+                dispatch(stateAdminAllCourses())
+            }}>
+            Enroll Student
+            </Button> <br/>
+            <Button
+                className={classes.studentsList}
+                variant='contained'
+                color='secondary'
+                onClick={()=>{
+                props.history.push('/admin/unenroll/course' )
+                dispatch(stateAdminAllCourses())
+            }}>
+            UnEnroll Student
+            </Button>
         </div>
     )
 }

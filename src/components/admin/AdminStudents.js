@@ -1,10 +1,28 @@
 import React from "react";
-import {Link} from 'react-router-dom'
+import { Button } from "@material-ui/core";
+import useStyles from "../Styling";
 const AdminStudents=(props)=>{
+    const classes=useStyles();
     return(
-        <div>
-            <Link to='/admin/students/list' >StudentsList</Link>|
-            <Link to='/admin/students/register'>Register Student</Link>
+        <div className={classes.student11}>
+            <Button
+            className={classes.studentReg}
+            variant='contained'
+            color='primary'
+             onClick={()=>{
+                 props.history.push('/admin/students/register')
+                 }}>
+                Register Student
+            </Button> <br/>
+            <Button
+            className={classes.studentsList}
+            variant='contained'
+            color='secondary'
+             onClick={()=>{
+                 props.history.push('/admin/students/list' )
+                 }}>
+                StudentsList
+            </Button>
         </div>
     )
 }

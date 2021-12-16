@@ -1,7 +1,6 @@
 const initialstate={
     registerError:'',
     loginError:'',
-    toggle:false,
     edittoggle:false,
     studentError:'',
     studentsList:[],
@@ -18,9 +17,6 @@ const adminReducer=(state=initialstate,action)=>{
         }
         case "ADMINLOGIN":{
             return {...state,loginError:action.payload}
-        }
-        case 'TOGGLE':{
-            return {...state,toggle:action.payload}
         }
         case "ADMINACCOUNT":{
             return {...state,account:action.payload}

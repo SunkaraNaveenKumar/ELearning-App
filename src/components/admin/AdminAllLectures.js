@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector,useDispatch } from "react-redux";
 import { stateAdminCourseLectures } from "../../actions/actionCreater";
+import { Link } from "react-router-dom";
 const AdminAllLectures=(props)=>{
     const dispatch=useDispatch()
     const allCourses=useSelector((state)=>{
@@ -9,6 +10,8 @@ const AdminAllLectures=(props)=>{
     ///////////////////////
     return(
         <div>
+        {allCourses.length>0 ?(
+            <>
             <ul>
             {allCourses.map(course=>{
                 return (
@@ -22,6 +25,12 @@ const AdminAllLectures=(props)=>{
                 )
             })}
             </ul>
+            </>
+        ):(
+            <>
+            No Courses,create a course?<Link to='/admin/addcourse'>click</Link>
+            </>
+        )}          
         </div>
     )
 }
